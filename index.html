@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <title>No Name</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="Timer">
+    <h1>休憩</h1>
+    <p>{{ currentTime }}</p>
+    <p>{{ timeLeft }}</p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script type="module">
+  const timer = new Vue({
+    el: '#Timer',
+    data: {
+      currentTime: '',
+      timeLeft: '',
+    }
+  });
+
+  let now = new Date();
+  let timeLeft;
+  let endDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 17, 0);
+
+  let timerUpdater = setInterval(() => {
+    now = new Date();
+    timer.currentTime = now.getHours().toString().padStart(2, '0') + ":" + now.getMinutes().toString().padStart(2, '0');
+    timeLeft = (endDate - now) / 1000;
+    timer.timeLeft = Math.floor(timeLeft / 60) + ":" + Math.floor(timeLeft % 60);
+  }, 1000);
+</script>
+</body>
+</html>
