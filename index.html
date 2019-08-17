@@ -15,24 +15,34 @@
 </div>
 <script src="https://cdn.jsdelivr.net/npm/vue"></script>
 <script type="module">
-  const timer = new Vue({
+  new Vue({
     el: '#Timer',
     data: {
-      currentTime: '',
-      timeLeft: '',
-    }
+      now: '',
+      endDate: '',
+    },
+    computed: {
+      currentTime: function() {
+        return this.now.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit', hour12: false });
+      },
+      timeLeft: function() {
+        const timeLeft = (this.endDate - this.now) / 1000;
+        return Math.floor(timeLeft / 60) + ":" + Math.floor(timeLeft % 60);
+      },
+    },
+    watch: {
+      now: function(value) {
+        // FIXME: This is a fake.
+        this.endDate = new Date(value.getFullYear(), value.getMonth(), value.getDate(), 17, 0);
+      }
+    },
+    created: function() {
+      this.now = new Date();
+    },
+    mounted: function() {
+      setInterval(() => this.now = new Date(), 1000);
+    },
   });
-
-  let now = new Date();
-  let timeLeft;
-  let endDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 17, 0);
-
-  let timerUpdater = setInterval(() => {
-    now = new Date();
-    timer.currentTime = now.getHours().toString().padStart(2, '0') + ":" + now.getMinutes().toString().padStart(2, '0');
-    timeLeft = (endDate - now) / 1000;
-    timer.timeLeft = Math.floor(timeLeft / 60) + ":" + Math.floor(timeLeft % 60);
-  }, 1000);
 </script>
 </body>
 </html>
