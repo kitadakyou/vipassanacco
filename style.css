@@ -4,19 +4,21 @@ body {
 }
 
 @keyframes gradationTest {
-    0% { background-color: #ee98fb; }
-    25% { background-color: #e35183; }
+    0% { background-color: #e35183; }
     50% { background-color: #6200ea; }
-    75% { background-color: #e35183; }
-    100% { background-color: #ee98fb; }
+    100% { background-color: #e35183; }
+}
+
+#Timer {
+    height: 100vh;
 }
 
 h1 {
     text-align: center;
-    font-size: 10rem;
+    font-size: 15vh;
 }
 
 p {
     text-align: center;
-    font-size: 5rem;
+    font-size: 7vh;
 }
