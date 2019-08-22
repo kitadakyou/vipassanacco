@@ -21,10 +21,16 @@ class Action {
       this.actions.push(action)
     }
   
-    getAction(): Action {
-      let result = this.actions[0]
-      this.actions = this.actions.splice(1, this.actions.length)
-      return result
+    getCurrentAction(now: Date): Action {
+      for (var i = 0; i + 1 < this.actions.length && this.actions[i + 1].startTime <= now; i++) {
+      }
+      return this.actions[i];
+    }
+
+    getNextAction(now: Date): Action {
+      for (var i = 0; i + 1 < this.actions.length && this.actions[i + 1].startTime <= now; i++) {
+      }
+      return this.actions[i + 1];
     }
   
     getLength(): number {

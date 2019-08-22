@@ -13,10 +13,15 @@ var ActionList = /** @class */ (function () {
     ActionList.prototype.pushAction = function (action) {
         this.actions.push(action);
     };
-    ActionList.prototype.getAction = function () {
-        var result = this.actions[0];
-        this.actions = this.actions.splice(1, this.actions.length);
-        return result;
+    ActionList.prototype.getCurrentAction = function (now) {
+        for (var i = 0; i + 1 < this.actions.length && this.actions[i + 1].startTime <= now; i++) {
+        }
+        return this.actions[i];
+    };
+    ActionList.prototype.getNextAction = function (now) {
+        for (var i = 0; i + 1 < this.actions.length && this.actions[i + 1].startTime <= now; i++) {
+        }
+        return this.actions[i + 1];
     };
     ActionList.prototype.getLength = function () {
         return this.actions.length;
