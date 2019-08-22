@@ -9,17 +9,28 @@
 </head>
 <body>
 <div id="Timer">
-    <h1>休憩</h1>
+    <h1>{{ actionName }}</h1>
     <p>{{ currentTime }}</p>
     <p>{{ timeLeft }}</p>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script src="action.js"></script>
 <script type="module">
   new Vue({
     el: '#Timer',
     data: {
-      now: '',
+      actionList: null,
+      now: null,
       endDate: '',
+    },
+    methods: {
+      updateAction: function() {
+        this.actionList = getSampleActions()
+        let currentAction = this.actionList.getCurrentAction(this.now)
+        this.actionName = currentAction.name
+        let nextAction = this.actionList.getNextAction(this.now)
+        this.endDate = nextAction.startTime
+      },
     },
     computed: {
       currentTime: function() {
@@ -27,22 +38,34 @@
       },
       timeLeft: function() {
         const timeLeft = (this.endDate - this.now) / 1000;
-        return Math.floor(timeLeft / 60) + ":" + Math.floor(timeLeft % 60);
+        return Math.floor(timeLeft / 60).toString().padStart(3, '0') + ":" + Math.floor(timeLeft % 60).toString().padStart(2, '0');
       },
     },
     watch: {
       now: function(value) {
-        // FIXME: This is a fake.
-        this.endDate = new Date(value.getFullYear(), value.getMonth(), value.getDate(), 17, 0);
+        if (this.now >= this.endDate) {
+          // TODO: updateAction に置き換え
+          this.actionList = getSampleActions()
+          let currentAction = this.actionList.getCurrentAction(this.now)
+          this.actionName = currentAction.name
+          let nextAction = this.actionList.getNextAction(this.now)
+          this.endDate = nextAction.startTime
+        }
       }
     },
     created: function() {
       this.now = new Date();
+      // TODO: updateAction に置き換え
+      this.actionList = getSampleActions()
+      let currentAction = this.actionList.getCurrentAction(this.now)
+      this.actionName = currentAction.name
+      let nextAction = this.actionList.getNextAction(this.now)
+      this.endDate = nextAction.startTime
     },
     mounted: function() {
       setInterval(() => this.now = new Date(), 1000);
     },
-  });
+  })
 </script>
 </body>
 </html>
