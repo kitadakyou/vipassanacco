@@ -14,14 +14,14 @@ var ActionList = /** @class */ (function () {
         this.actions.push(action);
     };
     ActionList.prototype.getCurrentAction = function (now) {
-        for (var i = 0; i + 1 < this.actions.length && this.actions[i + 1].startTime <= now; i++) {
+        var nextIndex = this.actions.findIndex(function (x) { return x.startTime > now; });
+        if (nextIndex === -1) {
+            return this.actions[this.actions.length - 1];
         }
-        return this.actions[i];
+        return this.actions[nextIndex - 1];
     };
     ActionList.prototype.getNextAction = function (now) {
-        for (var i = 0; i + 1 < this.actions.length && this.actions[i + 1].startTime <= now; i++) {
-        }
-        return this.actions[i + 1];
+        return this.actions.find(function (x) { return x.startTime > now; });
     };
     ActionList.prototype.getLength = function () {
         return this.actions.length;

@@ -22,23 +22,22 @@ class Action {
     }
   
     getCurrentAction(now: Date): Action {
-      for (var i = 0; i + 1 < this.actions.length && this.actions[i + 1].startTime <= now; i++) {
+      let nextIndex = this.actions.findIndex(x => x.startTime > now)
+      if (nextIndex === -1) {
+        return this.actions[this.actions.length - 1]
       }
-      return this.actions[i];
+      return this.actions[nextIndex - 1]
     }
 
-    getNextAction(now: Date): Action {
-      for (var i = 0; i + 1 < this.actions.length && this.actions[i + 1].startTime <= now; i++) {
-      }
-      return this.actions[i + 1];
+    getNextAction(now: Date): Action | undefined {
+      return this.actions.find(x => x.startTime > now)
     }
   
     getLength(): number {
       return this.actions.length
     }
   }
-  
-  
+    
   // デフォルト値を設定
   function getSampleActions(): ActionList {
     let resultList = new ActionList()
