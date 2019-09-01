@@ -21,22 +21,16 @@
     data: {
       actionList: null,
       now: null,
-      endDate: '',
-    },
-    methods: {
-      updateAction: function() {
-        this.actionList = getSampleActions()
-        let currentAction = this.actionList.getCurrentAction(this.now)
-        this.actionName = currentAction.name
-        let nextAction = this.actionList.getNextAction(this.now)
-        this.endDate = nextAction.startTime
-      },
+      endDate: null,
     },
     computed: {
       currentTime: function() {
         return this.now.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit', hour12: false });
       },
       timeLeft: function() {
+        if (this.endDate === null) {
+          return "今日は終了です。"
+        }
         const timeLeft = (this.endDate - this.now) / 1000;
         return Math.floor(timeLeft / 60).toString().padStart(3, '0') + ":" + Math.floor(timeLeft % 60).toString().padStart(2, '0');
       },
@@ -44,23 +38,30 @@
     watch: {
       now: function(value) {
         if (this.now >= this.endDate) {
-          // TODO: updateAction に置き換え
           this.actionList = getSampleActions()
           let currentAction = this.actionList.getCurrentAction(this.now)
           this.actionName = currentAction.name
           let nextAction = this.actionList.getNextAction(this.now)
-          this.endDate = nextAction.startTime
+          if (typeof nextAction !== "undefined") {
+            this.endDate = nextAction.startTime
+          } else {
+            this.endDate = null
+          }
         }
       }
     },
     created: function() {
-      this.now = new Date();
-      // TODO: updateAction に置き換え
+      this.now = new Date();    
       this.actionList = getSampleActions()
       let currentAction = this.actionList.getCurrentAction(this.now)
       this.actionName = currentAction.name
       let nextAction = this.actionList.getNextAction(this.now)
-      this.endDate = nextAction.startTime
+      this.endDate = nextAction.startTime         
+      if (typeof nextAction !== "undefined") {
+            this.endDate = nextAction.startTime
+      } else {
+          this.endDate = null
+      }
     },
     mounted: function() {
       setInterval(() => this.now = new Date(), 1000);
